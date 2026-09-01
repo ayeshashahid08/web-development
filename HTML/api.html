@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HTML Web Storage API Example</title>
+</head>
+<body>
+    <h1>Web Storage API</h1>
+    <p>Save your name and age in your browser using <code>localStorage</code>.</p>
+    
+    <input id="name" type="text" placeholder="Enter your name">
+    <input id="age" type="number" placeholder="Enter your age">
+    <button id="saveButton" type="button">Save Info</button>
+    <button id="clearButton" type="button">Clear Info</button>
+    
+    <p id="message"></p>
+
+    <script>
+        // 1. Select the HTML elements
+        const nameInput = document.getElementById("name");
+        const ageInput = document.getElementById("age");
+        const message = document.getElementById("message");
+        const saveButton = document.getElementById("saveButton");
+        const clearButton = document.getElementById("clearButton");
+
+        // 2. Function to read from localStorage and update the UI
+        function updateUI() {
+            const savedName = localStorage.getItem("name");
+            const savedAge = localStorage.getItem("age");
+
+            if (savedName && savedAge) {
+                nameInput.value = savedName;
+                ageInput.value = savedAge;
+                message.textContent = `Welcome back, ${savedName}! You are ${savedAge} years old.`;
+            } else {
+                nameInput.value = "";
+                ageInput.value = "";
+                message.textContent = "No name or age saved yet.";
+            }
+        }
+
+        // 3. Save button handler
+        saveButton.addEventListener("click", () => {
+            const name = nameInput.value.trim();
+            const age = ageInput.value.trim();
+
+            if (!name || !age) {
+                message.textContent = "Please enter both a valid name and age.";
+                return;
+            }
+
+            // Save to browser storage
+            localStorage.setItem("name", name);
+            localStorage.setItem("age", age);
+
+            // Update display
+            updateUI();
+        });
+
+        // 4. Clear button handler
+        clearButton.addEventListener("click", () => {
+            // Remove items from storage
+            localStorage.removeItem("name");
+            localStorage.removeItem("age");
+
+            // Update display
+            updateUI();
+        });
+
+        // 5. Run automatically when page loads to restore saved values
+        updateUI();
+    </script>
+</body>
+</html>
